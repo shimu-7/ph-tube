@@ -1,4 +1,6 @@
 let hour,remain,min;
+// let array=[];
+// console.log(array);
 
 const loadCategory = async () => {
     const res = await fetch('https://openapi.programming-hero.com/api/videos/categories')
@@ -24,11 +26,22 @@ const loadCategoryVideo = async(id) =>{
     const res = await fetch(`https://openapi.programming-hero.com/api/videos/category/${id}`)
     const data = await res.json()
     const video = data.data;
-    console.log(video);
+    // console.log(video);
     displayCategoryVideo(video);
 
 }
 
+// const sortView =()=>{
+//     let sortedProducts = array.sort(
+//         (p1, p2) => (p1.others.views < p2.others.views) ? 1 : (p1.others.views > p2.others.views) ? -1 : 0);
+    
+//     console.log(array);
+//     displaySort(array);
+//     // sortedProducts?.forEach(product => {console.log(product)});
+// }
+// const displaySort=(arrays)=>{
+//     arrays?.forEach(product => {console.log(product)});
+// }
 const displayCategoryVideo = (videos) =>{
     
     if(videos.length===0){
@@ -51,13 +64,14 @@ const displayCategoryVideo = (videos) =>{
     const container = document.getElementById('showVideoContainer');
     container.textContent = '';
     videos?.forEach(video => {
-        console.log(video);
+        // console.log(video);
+        // array.push(video);
         const div = document.createElement('div');
         if(video.others.posted_date){
              hour=parseInt(video.others.posted_date/3600)
              remain = parseInt(video.others.posted_date/3600)
              min = parseInt(remain/60);
-            console.log(hour,min);
+            // console.log(hour,min);
         }
         div.innerHTML=`
         <div class="card h-[300px] card-compact bg-base-100 ">
@@ -115,3 +129,5 @@ const showCategoryVideo = (id) =>{
 }
 loadCategory();
 loadCategoryVideo(1000);
+sortView();
+console.log(array);

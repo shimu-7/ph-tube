@@ -1,3 +1,4 @@
+let hour,remain,min;
 
 const loadCategory = async () => {
     const res = await fetch('https://openapi.programming-hero.com/api/videos/categories')
@@ -12,7 +13,7 @@ const displayCategory = (categories) => {
     for (const category of categories) {
         const btn=document.createElement('a');
         btn.innerHTML=`
-        <a class="btn sm:btn-sm md:btn-md" onclick="showCategoryVideo('${category.category_id}')">${category.category}</a>
+        <a  class="btn sm:btn-sm md:btn-md" onclick="showCategoryVideo('${category.category_id}')">${category.category}</a>
         `;
         btn_container.appendChild(btn);
     }
@@ -29,17 +30,52 @@ const loadCategoryVideo = async(id) =>{
 }
 
 const displayCategoryVideo = (videos) =>{
-    const container = document.getElementById('showVideoContainer');
-    container.textContent = '';
-    console.log(videos.length);
-
-    videos.forEach(video => {
-        // console.log(phone);
+    
+    if(videos.length===0){
+        const container = document.getElementById('no_content')
         const div = document.createElement('div');
         div.innerHTML=`
-        <div class="card h-[350px] card-compact bg-base-100 shadow-xl">
-                <figure><img src="${video.thumbnail}" class="h-[200px]" alt="Shoes" /></figure>
-                <div class="card-body flex flex-row ">
+        <div class="text-center grid-flow-col">
+            <div class="card  bg-base-100 ">
+                <figure class="px-10 pt-10">
+                    <img src="./images/Icon.png" alt="Shoes" class="rounded-xl" />
+                </figure>
+                <div class="card-body items-center text-center">
+                    <h2 class="card-title">Oops!! Sorry, There is no <br> content here</h2>
+                </div>
+            </div>
+        </div>
+        `;
+        container.appendChild(div);
+    }
+    const container = document.getElementById('showVideoContainer');
+    container.textContent = '';
+    videos?.forEach(video => {
+        console.log(video);
+        const div = document.createElement('div');
+        if(video.others.posted_date){
+             hour=parseInt(video.others.posted_date/3600)
+             remain = parseInt(video.others.posted_date/3600)
+             min = parseInt(remain/60);
+            console.log(hour,min);
+        }
+        div.innerHTML=`
+        <div class="card h-[300px] card-compact bg-base-100 ">
+               <div style="position: relative;" class="h-[200px]">
+                <figure style="position: relative;"><img src="${video.thumbnail}" class="h-[200px]" style="position: relative;" alt="Shoes" /></figure>
+                ${video.others.posted_date?
+                    `<span style="position: absolute;
+                    bottom: 10px;
+                    right: 5px;" class="  bg-black text-white px-1
+                     mx-3">
+                     ${hour}hours ${min}min ago
+                    </span>
+                    `
+                    :""
+                }
+                 </div>
+                
+                <div class="card-body flex flex-row">
                     <div>
                     <div class="avatar">
                     <div class="w-[50px] h-[50px] rounded-full">
@@ -64,21 +100,8 @@ const displayCategoryVideo = (videos) =>{
                 </div>
             </div>
         `;
-        // console.log(video.authors[0].verified);
         container.appendChild(div);
-        // verify=document.getElementById('verify');
-        // console.log(verify);
-        // if(video.authors[0].verified===true){
-        //     verify.classlist.remove('hidden');
-        // }
-        // else{
-        //     //verify.setAttribute("display", "hidden")
-        // }
-        
-        // container.appendChild(div);
-        // list=document.getElementById('author_name');
-        // div=document.createElement('div').innerHTML=`<i class="fa-solid fa-check"></i>`;
-        // list.appendChild(div);
+       
     });
 
 
@@ -86,6 +109,8 @@ const displayCategoryVideo = (videos) =>{
     
 }
 const showCategoryVideo = (id) =>{
+    // const a=document.getElementById("id'${id}' ");
+
     loadCategoryVideo(id);
 }
 loadCategory();
